@@ -5,6 +5,7 @@ import { ClienteComponent } from './components/cliente/cliente.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { LayoutComponent } from './layout/layout.component';
 import { AppLayoutModule } from './layout/app.layout.module';
+import { CategoriaService } from './inventario/services/categoria.service';
 
 
 @NgModule({
@@ -17,6 +18,10 @@ import { AppLayoutModule } from './layout/app.layout.module';
     CommonModule,
     AdminRoutingModule,
     AppLayoutModule
+  ],
+ providers: [
+  CategoriaService
+
   ]
 })
 export class AdminModule { }
