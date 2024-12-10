@@ -1,58 +1,112 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { CategoriaService } from './../../services/categoria.service';
 import { Component, inject, OnInit } from '@angular/core';
-
+import Swal from 'sweetalert2';
 interface Categoria {
-  id?: number,
-  nombre: string,
-  detalle?:string
+  id: number;
+  nombre: string;
+  detalle: string;
 }
 @Component({
   selector: 'app-categoria',
   templateUrl: './categoria.component.html',
-  styleUrl: './categoria.component.scss'
+  styleUrl: './categoria.component.scss',
 })
 export class CategoriaComponent implements OnInit {
+  private categoriaService = inject(CategoriaService);
 
-  private categoriaService = inject(CategoriaService)
-
-  categorias:Categoria[]=[]
-  dialog_visible:boolean=false;
-  categoriaForm=new FormGroup({
+  categorias: Categoria[] = [];
+  dialog_visible: boolean = false;
+  categoria_id: number = -1;
+  categoriaForm = new FormGroup({
     nombre: new FormControl(''),
-    detalle: new FormControl('')
+    detalle: new FormControl(''),
   });
 
   ngOnInit(): void {
-    this.getCategorias()
-
+    this.getCategorias();
   }
-  getCategorias(){
+  getCategorias() {
     this.categoriaService.funListar().subscribe(
-      (res:any)=>{
-        this.categorias=res;
+      (res: any) => {
+        this.categorias = res;
       },
-      (error:any)=>{
+      (error: any) => {
         console.log(error);
       }
-    )
+    );
   }
-  mostrarDialog(){
-    this.dialog_visible=true
-
+  mostrarDialog() {
+    this.dialog_visible = true;
   }
-  guardarCategoria(){
-
-    this.categoriaService.funGuardar(this.categoriaForm.value).subscribe(
-      (res:any)=>{
-        this.dialog_visible=false;
-        this.getCategorias();
-      },
-      (error:any)=>{
-        console.log(error);
+  guardarCategoria() {
+    if (this.categoria_id > 0) {
+      this.categoriaService
+        .funModificar(this.categoria_id, this.categoriaForm.value)
+        .subscribe(
+          (res: any) => {
+            this.dialog_visible = false;
+            this.getCategorias();
+            this.categoria_id = -1;
+            this.alerta("ACTUALIZADO","La categoría se modifico con éxito!","success")
+          },
+          (error: any) => {
+            this.alerta("ERROR AL ACTUALIZAR","Verificar los datos!","error")
+          }
+        );
+        this.categoriaForm.reset();
+    } 
+    else 
+    {
+      this.categoriaService.funGuardar(this.categoriaForm.value).subscribe
+      (
+        (res: any) => {
+          this.dialog_visible = false;
+          this.getCategorias();
+          this.alerta("REGISTRADO","La categoría se creó con éxito!","success")
+        }
+      ),
+        (error: any) => {
+          this.alerta("ERROR AL REGISTRADO","Verifica los datos!","error")
+        }
+      this.categoriaForm.reset();
+    }
+  }
+  editarCategoria(cat: Categoria) {
+    this.dialog_visible = true;
+    this.categoria_id = cat.id;
+    this.categoriaForm.setValue({ nombre: cat.nombre, detalle: cat.detalle });
+  }
+  eliminarCategoria(cat: Categoria) {
+    Swal.fire({
+      title:"¿Está seguro de eliminar la categoría? ",
+      text:"Una vez eliminado  no se podrá recuperar!",
+      icon:"warning",
+      showCancelButton:true,
+      confirmButtonColor:"#3085d6",
+      cancelButtonColor:"#d33",
+      confirmButtonText:"Si, eliminar!"
+    }).then((result) =>{
+      if (result.isConfirmed){
+        this.categoriaService.funEliminar(cat.id).subscribe( 
+          (res:any)=>{
+            this.alerta("ELIMINADO!","Categoria eliminada ","success")
+           
+            this.getCategorias();
+            this.categoria_id=-1
+          },
+          (error:any)=>{
+            this.alerta("ERROR!","Error al intentar eliminar.","error")
+          }
+        )
       }
-    )
-
-
+    });
+  }
+  alerta(title:string , text:string, icon:'success' |'error'|'info'|'question'){
+    Swal.fire({title,text,icon});
+     // title:title,
+      //text:text,
+      //icon:icon
+   
   }
 }

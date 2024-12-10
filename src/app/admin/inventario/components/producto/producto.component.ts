@@ -6,5 +6,38 @@ import { Component } from '@angular/core';
   styleUrl: './producto.component.scss'
 })
 export class ProductoComponent {
+  products:any[]=[
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+    {id:1, nombre: "teclado", precio:394.96, categoria_id:5, stock:12, estado:"COMPLETO"},
+
+
+  ];
+  cols:any[]=[];
+
+
+  openNew(){
+
+  }
+
+  editProducto(prod:any){
+
+  }
+
+  deleteProducto(prod:any){
+
+  }
 
 }
